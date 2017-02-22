@@ -14,8 +14,8 @@ public class Main {
             System.out.println("Wybierz z listy figurę jaką chcesz narysować poprzez wpisanie odpowiedniej liczby.");
             System.out.println("1. Trójkąt prostokątny wypełniony.");
             System.out.println("2. Trójkąt prostokątny pusty.");
-            System.out.println("3. Trójkąt równoboczny wypełniony.");
-            System.out.println("4. Trójkąt równoboczny pusty.");
+            System.out.println("3. Trójkąt równoramienny wypełniony.");
+            System.out.println("4. Trójkąt równoramienny pusty.");
             System.out.println("5. Prostokąt wypełniony.");
             System.out.println("6. Prostokąt pusty.");
             System.out.println("7. Koło.");
@@ -26,13 +26,35 @@ public class Main {
             String nazwa = scanner.next();
             if (nazwa.equals("1")) {
 
-                TrojkatProstokatnyWypelniony trojkat = new TrojkatProstokatnyWypelniony();
+                TrojkatProstokatnyWypelniony trojkatPW = new TrojkatProstokatnyWypelniony();
 
-                trojkat.rysuj();
-            }// koniec if "1"
+                trojkatPW.rysuj();
+            }
 
             else if (nazwa.equals("2")){
 
+                TrojkatProstokatnyPusty trojkatPP = new TrojkatProstokatnyPusty();
+
+                trojkatPP.rysuj();
+            }
+
+            else  if (nazwa.equals("3")){
+
+                TrojkatRownoramiennyWypelniony trojkatRW = new TrojkatRownoramiennyWypelniony();
+
+                trojkatRW.rysuj();
+            }
+
+            else if(nazwa.equals("4")){
+                TrojkatRownoramiennyPusty trojkatRP = new TrojkatRownoramiennyPusty();
+
+                trojkatRP.rysuj();
+            }
+
+            else if(nazwa.equals("5")){
+                ProstokatWypelniony prostokatW = new ProstokatWypelniony();
+
+                prostokatW.rysuj();
             }
 
             if(Kontynuacja.czyKontynuowac()==1){
@@ -40,14 +62,102 @@ public class Main {
             else{
                 i = true;
             }
-        }// koniec pętli zewnętrznej
+        }// koniec pętli while
     }
 }
 
 
 
+---------------------------------------------------------------------------------------------------------------------------
+
+import java.util.Scanner;
+
+/**
+ * Created by Farmer on 2017-02-21.
+ */
+abstract class Figura {
+    int wysokosc;
+
+    public void setWysokosc(int wysokosc) {
+        this.wysokosc = wysokosc;
+    }
+
+    abstract void rysuj();
+
+    public void przyjmijWartosci() {
+        System.out.println("Podaj wysokość figury:");
+        String wysokoscS;
+
+        boolean i = false;
+
+        while (i != true) {
+            Scanner scanner = new Scanner(System.in);
+            wysokoscS = scanner.next();
+
+            try {
+                int wysokosc = Integer.valueOf(wysokoscS);
+                setWysokosc(wysokosc);
+
+                i = true;
+            } catch (Exception e) {
+                System.out.println("Musisz wpisać liczbę typu int!!! Spróbuj ponownie.");
+            }
+        }
+    }
+}
+
+
 
 ---------------------------------------------------------------------------------------------------------------------------
+
+
+import java.util.Scanner;
+
+/**
+ * Created by Farmer on 2017-02-22.
+ */
+abstract class Prostokat extends Figura {
+    int dlugosc;
+
+    public void setDlugosc(int dlugosc){
+        this.dlugosc = dlugosc;
+    }
+
+    @Override
+    public void przyjmijWartosci() {
+        System.out.println("Podaj wysokość figury:");
+        String wysokoscS;
+
+        Scanner scanner = new Scanner(System.in);
+        wysokoscS = scanner.next();
+
+        System.out.println("Podaj dlugosc figury:");
+        String dlugoscS;
+        dlugoscS = scanner.next();
+
+
+        boolean i = false;
+
+        while (i != true) {
+
+            try {
+                int wysokosc = Integer.valueOf(wysokoscS);
+                int dlugosc = Integer.valueOf(dlugoscS);
+                setWysokosc(wysokosc);
+                setDlugosc(dlugosc);
+
+                i = true;
+            } catch (Exception e) {
+                System.out.println("Musisz wpisać liczby typu int!!! Spróbuj ponownie.");
+            }
+        }
+    }
+}
+
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
 import java.util.Scanner;
 
 /**
@@ -82,6 +192,7 @@ public class Kontynuacja {
 
 
 
+
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -92,7 +203,9 @@ import java.util.Scanner;
  */
 public class TrojkatProstokatnyWypelniony extends Figura{
 
-    public void tworz(){
+    public void rysuj(){
+
+        przyjmijWartosci();
 
         for(int i=1; i<=wysokosc; i++) {
             for(int j=1; j<=i; j++) {
@@ -101,40 +214,116 @@ public class TrojkatProstokatnyWypelniony extends Figura{
             System.out.println("");
         }
     }
-
-    public void rysuj() {
-        System.out.println("Podaj wysokość trójkąta:");
-        String wysokoscS;
-
-        boolean i1 = false;
-
-        while (i1 != true) {
-            Scanner scanner = new Scanner(System.in);
-            wysokoscS = scanner.next();
-
-            try {
-                int wysokosc = Integer.valueOf(wysokoscS);
-                setWysokosc(wysokosc);
-                tworz();
-                i1 = true;
-            } catch (Exception e) {
-                System.out.println("Musisz wpisać liczbę typu int!!! Spróbuj ponownie.");
-            }
-        }//koniec pętli wewnętrznej while
-    }
 }
 
 ------------------------------------------------------------------------------------------------------------------------
 
 
-/**
- * Created by Farmer on 2017-02-21.
- */
-abstract class Figura {
-    int wysokosc;
+import java.util.Scanner;
 
-    public void setWysokosc(int wysokosc){
-        this.wysokosc = wysokosc;
+/**
+ * Created by Farmer on 2017-02-22.
+ */
+public class TrojkatProstokatnyPusty extends Figura {
+
+    public void rysuj(){
+        przyjmijWartosci();
+
+        for(int i=1; i<=wysokosc; i++) {
+
+            if(i>2 && i<wysokosc) {
+                System.out.print("*");
+
+                for (int j = 1; j <= (i-2); j++) {
+                    System.out.print(" ");
+                }
+
+                System.out.println("*");
+
+            }
+            else {
+                for (int j = 1; j <= i; j++) {
+                    System.out.print("*");
+                }
+                System.out.println("");
+            }
+        }
     }
 }
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+/**
+ * Created by Farmer on 2017-02-22.
+ */
+public class TrojkatRownoramiennyWypelniony extends Figura {
+
+    public void rysuj(){
+        przyjmijWartosci();
+
+        for (int i=1; i<=wysokosc; i++) {
+            for (int j=1; j<=(wysokosc-i); j++) {
+                System.out.print(" ");
+            }
+            for (int j=1; j<=(2*i-1); j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+    }
+}
+
+
+----------------------------------------------------------------------------------------------------------------------------
+
+/**
+ * Created by Farmer on 2017-02-22.
+ */
+public class TrojkatRownoramiennyWypelniony extends Figura {
+
+    public void rysuj(){
+        przyjmijWartosci();
+
+        for (int i=1; i<=wysokosc; i++) {
+            for (int j=1; j<=(wysokosc-i); j++) {
+                System.out.print(" ");
+            }
+            for (int j=1; j<=(2*i-1); j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+    }
+}
+
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+/**
+ * Created by Farmer on 2017-02-22.
+ */
+public class ProstokatWypelniony extends Prostokat {
+
+    public void rysuj(){
+        przyjmijWartosci();
+
+        for(int i=1; i<=wysokosc; i++){
+            for(int j=1; j<=dlugosc; j++){
+                System.out.print("*");
+            }
+            System.out.println("");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
 

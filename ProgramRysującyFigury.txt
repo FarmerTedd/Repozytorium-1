@@ -18,57 +18,60 @@ public class Main {
             System.out.println("4. Trójkąt równoramienny pusty.");
             System.out.println("5. Prostokąt wypełniony.");
             System.out.println("6. Prostokąt pusty.");
-            System.out.println("7. Koło.");
-            System.out.println("8. Okrąg.");
 
             Scanner scanner = new Scanner(System.in);
 
             String nazwa = scanner.next();
+
             if (nazwa.equals("1")) {
-
                 TrojkatProstokatnyWypelniony trojkatPW = new TrojkatProstokatnyWypelniony();
-
                 trojkatPW.rysuj();
             }
 
             else if (nazwa.equals("2")){
-
                 TrojkatProstokatnyPusty trojkatPP = new TrojkatProstokatnyPusty();
-
                 trojkatPP.rysuj();
             }
 
             else  if (nazwa.equals("3")){
-
                 TrojkatRownoramiennyWypelniony trojkatRW = new TrojkatRownoramiennyWypelniony();
-
                 trojkatRW.rysuj();
             }
 
             else if(nazwa.equals("4")){
                 TrojkatRownoramiennyPusty trojkatRP = new TrojkatRownoramiennyPusty();
-
                 trojkatRP.rysuj();
             }
 
             else if(nazwa.equals("5")){
                 ProstokatWypelniony prostokatW = new ProstokatWypelniony();
-
                 prostokatW.rysuj();
             }
 
-            if(Kontynuacja.czyKontynuowac()==1){
+            else if(nazwa.equals("6")){
+                ProstokaPusty prostokatP = new ProstokaPusty();
+                prostokatP.rysuj();
             }
+
             else{
-                i = true;
+                System.out.println("Musisz podać cyfrę od '1' do '6'");
+            }
+
+            if(nazwa.equals("1") || nazwa.equals("2") || nazwa.equals("3") || nazwa.equals("4")
+                    || nazwa.equals("5") || nazwa.equals("6"))
+            {
+                if (Kontynuacja.czyKontynuowac() == 1) {
+                } else {
+                    i = true;
+                }
             }
         }// koniec pętli while
     }
 }
 
 
+---------------------------------------------------------------------------------------------------
 
----------------------------------------------------------------------------------------------------------------------------
 
 import java.util.Scanner;
 
@@ -76,7 +79,11 @@ import java.util.Scanner;
  * Created by Farmer on 2017-02-21.
  */
 abstract class Figura {
-    int wysokosc;
+    private int wysokosc;
+
+    public int getWysokosc(){
+        return wysokosc;
+    }
 
     public void setWysokosc(int wysokosc) {
         this.wysokosc = wysokosc;
@@ -95,9 +102,7 @@ abstract class Figura {
             wysokoscS = scanner.next();
 
             try {
-                int wysokosc = Integer.valueOf(wysokoscS);
-                setWysokosc(wysokosc);
-
+                setWysokosc(Integer.valueOf(wysokoscS));
                 i = true;
             } catch (Exception e) {
                 System.out.println("Musisz wpisać liczbę typu int!!! Spróbuj ponownie.");
@@ -107,8 +112,7 @@ abstract class Figura {
 }
 
 
-
----------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 
 import java.util.Scanner;
@@ -117,10 +121,14 @@ import java.util.Scanner;
  * Created by Farmer on 2017-02-22.
  */
 abstract class Prostokat extends Figura {
-    int dlugosc;
+    private int dlugosc;
 
     public void setDlugosc(int dlugosc){
         this.dlugosc = dlugosc;
+    }
+
+    public int getDlugosc(){
+        return dlugosc;
     }
 
     @Override
@@ -134,18 +142,14 @@ abstract class Prostokat extends Figura {
         System.out.println("Podaj dlugosc figury:");
         String dlugoscS;
         dlugoscS = scanner.next();
-
-
+        
         boolean i = false;
 
         while (i != true) {
 
             try {
-                int wysokosc = Integer.valueOf(wysokoscS);
-                int dlugosc = Integer.valueOf(dlugoscS);
-                setWysokosc(wysokosc);
-                setDlugosc(dlugosc);
-
+                setWysokosc(Integer.valueOf(wysokoscS));
+                setDlugosc(Integer.valueOf(dlugoscS));
                 i = true;
             } catch (Exception e) {
                 System.out.println("Musisz wpisać liczby typu int!!! Spróbuj ponownie.");
@@ -155,8 +159,8 @@ abstract class Prostokat extends Figura {
 }
 
 
+---------------------------------------------------------------------------------------------------
 
----------------------------------------------------------------------------------------------------------------------------
 
 import java.util.Scanner;
 
@@ -172,17 +176,22 @@ public class Kontynuacja {
         int koniec = 0;
 
         while (i2 != true) {
-            System.out.println("Jeśli chcesz kontynuować rysowanie wybierz '1', jeśli chcesz zakończyć działanie programu wciśnij '2'");
+            System.out.println("Jeśli chcesz kontynuować rysowanie wybierz '1', " +
+                    "jeśli chcesz zakończyć działanie programu wciśnij '2'");
 
             String wybor = scanner.next();
 
             if (wybor.equals("1")) {
                 i2 = true;
                 koniec = 1;
-            } else if (wybor.equals("2")) {
+            }
+            
+             else if (wybor.equals("2")) {
                 i2 = true;
                 koniec = 2;
-            } else {
+            }
+                
+             else {
                 System.out.println("Błędny wybór. Musisz wpisać '1' lub '2'");
             }
         }//koniec pętli while wewnętrznej
@@ -191,9 +200,7 @@ public class Kontynuacja {
 }
 
 
-
-
-----------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 
 
 import java.util.Scanner;
@@ -207,7 +214,7 @@ public class TrojkatProstokatnyWypelniony extends Figura{
 
         przyjmijWartosci();
 
-        for(int i=1; i<=wysokosc; i++) {
+        for(int i=1; i<=getWysokosc(); i++) {
             for(int j=1; j<=i; j++) {
                 System.out.print("*");
             }
@@ -216,7 +223,8 @@ public class TrojkatProstokatnyWypelniony extends Figura{
     }
 }
 
-------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------
 
 
 import java.util.Scanner;
@@ -229,17 +237,15 @@ public class TrojkatProstokatnyPusty extends Figura {
     public void rysuj(){
         przyjmijWartosci();
 
-        for(int i=1; i<=wysokosc; i++) {
+        for(int i=1; i<=getWysokosc(); i++) {
 
-            if(i>2 && i<wysokosc) {
+            if(i>2 && i<getWysokosc()) {
                 System.out.print("*");
-
+                
                 for (int j = 1; j <= (i-2); j++) {
                     System.out.print(" ");
                 }
-
                 System.out.println("*");
-
             }
             else {
                 for (int j = 1; j <= i; j++) {
@@ -252,7 +258,8 @@ public class TrojkatProstokatnyPusty extends Figura {
 }
 
 
----------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+
 
 /**
  * Created by Farmer on 2017-02-22.
@@ -262,8 +269,8 @@ public class TrojkatRownoramiennyWypelniony extends Figura {
     public void rysuj(){
         przyjmijWartosci();
 
-        for (int i=1; i<=wysokosc; i++) {
-            for (int j=1; j<=(wysokosc-i); j++) {
+        for (int i=1; i<=getWysokosc(); i++) {
+            for (int j=1; j<=(getWysokosc()-i); j++) {
                 System.out.print(" ");
             }
             for (int j=1; j<=(2*i-1); j++) {
@@ -275,22 +282,34 @@ public class TrojkatRownoramiennyWypelniony extends Figura {
 }
 
 
-----------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------
+
 
 /**
  * Created by Farmer on 2017-02-22.
  */
-public class TrojkatRownoramiennyWypelniony extends Figura {
+public class TrojkatRownoramiennyPusty  extends Figura{
 
     public void rysuj(){
         przyjmijWartosci();
 
-        for (int i=1; i<=wysokosc; i++) {
-            for (int j=1; j<=(wysokosc-i); j++) {
+        for (int i=1; i<=getWysokosc(); i++) {
+            for (int j=1; j<=(getWysokosc()-i); j++) {
                 System.out.print(" ");
             }
-            for (int j=1; j<=(2*i-1); j++) {
+            if (i>=2 && i<getWysokosc()){
                 System.out.print("*");
+
+                for (int j = 1; j <= ((2 * i) - 3); j++) {
+                    System.out.print(" ");
+                }
+                System.out.print("*");
+            }
+            else {
+                for(int j=1; j<=(2*i-1); j++){
+                    System.out.print("*");
+                }
             }
             System.out.println();
         }
@@ -298,8 +317,7 @@ public class TrojkatRownoramiennyWypelniony extends Figura {
 }
 
 
-----------------------------------------------------------------------------------------------------------------------------
-
+---------------------------------------------------------------------------------------------------
 
 /**
  * Created by Farmer on 2017-02-22.
@@ -309,14 +327,50 @@ public class ProstokatWypelniony extends Prostokat {
     public void rysuj(){
         przyjmijWartosci();
 
-        for(int i=1; i<=wysokosc; i++){
-            for(int j=1; j<=dlugosc; j++){
+        for(int i=1; i<=getWysokosc(); i++){
+            for(int j=1; j<=getDlugosc(); j++){
                 System.out.print("*");
             }
             System.out.println("");
         }
     }
 }
+
+
+---------------------------------------------------------------------------------------------------
+
+/**
+ * Created by Farmer on 2017-02-23.
+ */
+public class ProstokaPusty extends Prostokat{
+
+    public void rysuj(){
+
+        przyjmijWartosci();
+
+        for(int i=1; i<=getWysokosc(); i++){
+            if(i>1 && i <getWysokosc()){
+                System.out.print("*");
+
+                for(int j=1; j<=(getDlugosc()-2); j++){
+                    System.out.print(" ");
+                }
+                System.out.print("*");
+            }
+
+            else {
+                for (int j=1; j<=(getDlugosc()); j++){
+                    System.out.print("*");
+                }
+            }
+            System.out.println("");
+        }
+    }
+}
+
+
+---------------------------------------------------------------------------------------------------
+
 
 
 

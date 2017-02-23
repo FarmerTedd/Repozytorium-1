@@ -1,0 +1,36 @@
+/**
+ * Created by Farmer on 2017-02-23.
+ */
+public class Main {
+
+    public static void main(String[] args){
+
+        char litera = 'A';
+        int literaWartosc = (int) litera;
+        int literaWartoscBazowa = literaWartosc;
+        int liczba = 1;
+        int liczbaBazowa = liczba;
+
+        String tablica[][] = new String[5][5];
+
+        for(int i=0; i<tablica.length; i++){
+            for(int j=0; j<tablica[i].length; j++){
+
+                litera = (char) literaWartosc;
+                String literaS = String.valueOf(litera);
+
+                String liczbaS = String.valueOf(liczba);
+
+                tablica[i][j]=literaS + liczbaS;
+
+                System.out.println("Pole[" + i +"][" + j + "]= " + tablica[i][j] );
+                liczba = liczbaBazowa + j + 1;
+            }
+            liczba = liczbaBazowa;
+            literaWartosc = literaWartoscBazowa + i + 1;
+        }
+    }
+}
+
+
+----------------------------------------------------------------------------------------

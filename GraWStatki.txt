@@ -3,32 +3,191 @@
  */
 public class Main {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        char litera = 'A';
-        int literaWartosc = (int) litera;
-        int literaWartoscBazowa = literaWartosc;
-        int liczba = 1;
-        int liczbaBazowa = liczba;
+        Plansza plansza = new Plansza();
 
-        String tablica[][] = new String[5][5];
+        plansza.tworz();
 
-        for(int i=0; i<tablica.length; i++){
-            for(int j=0; j<tablica[i].length; j++){
+        plansza.statki();
+    }
+}
+
+
+----------------------------------------------------------------------------------------
+
+
+import java.util.ArrayList;
+
+/**
+ * Created by Farmer on 2017-02-24.
+ */
+public class Plansza {
+
+    char litera = 'A';
+    int literaWartosc = (int) litera;
+    int literaWartoscBazowa = literaWartosc;
+    int liczba = 1;
+    int liczbaBazowa = liczba;
+
+    String plansza[][] = new String[5][5];
+
+    public void tworz() {
+
+        for (int i = 0; i < plansza.length; i++) {
+            for (int j = 0; j < plansza[i].length; j++) {
 
                 litera = (char) literaWartosc;
                 String literaS = String.valueOf(litera);
 
                 String liczbaS = String.valueOf(liczba);
 
-                tablica[i][j]=literaS + liczbaS;
+                plansza[i][j] = literaS + liczbaS;
 
-                System.out.println("Pole[" + i +"][" + j + "]= " + tablica[i][j] );
+                System.out.println("Pole[" + i + "][" + j + "]= " + plansza[i][j]);
                 liczba = liczbaBazowa + j + 1;
             }
             liczba = liczbaBazowa;
             literaWartosc = literaWartoscBazowa + i + 1;
         }
+    }
+
+    public boolean sprawdzCzyIstnieje(int i, int j){
+        boolean spr = true;
+        try{
+            String cosTam = plansza[i][j];
+
+        }catch (Exception e){
+
+            spr = false;
+        }
+        return spr;
+    }
+
+    public void statki(){
+        int poleLitera = (int) (Math.random() * 5);
+        int poleLiczba = (int) (Math.random() * 5);
+
+        String jednomasztowiec = plansza[poleLitera][poleLiczba];
+
+        ArrayList <String> polaWolne = new ArrayList<String>();
+
+        polaWolne.add(jednomasztowiec);
+
+        if(sprawdzCzyIstnieje(poleLitera, poleLiczba+1)==true){
+            polaWolne.add(plansza[poleLitera][poleLiczba+1]);
+        }
+
+        if(sprawdzCzyIstnieje(poleLitera, poleLiczba-1)==true){
+            polaWolne.add(plansza[poleLitera][poleLiczba-1]);
+        }
+
+        if(sprawdzCzyIstnieje(poleLitera+1, poleLiczba)==true){
+            polaWolne.add(plansza[poleLitera+1][poleLiczba]);
+        }
+
+        if(sprawdzCzyIstnieje(poleLitera-1, poleLiczba)==true){
+            polaWolne.add(plansza[poleLitera-1][poleLiczba]);
+        }
+
+        if(sprawdzCzyIstnieje(poleLitera+1, poleLiczba+1)==true){
+            polaWolne.add(plansza[poleLitera+1][poleLiczba+1]);
+        }
+
+        if(sprawdzCzyIstnieje(poleLitera-1, poleLiczba+1)==true){
+            polaWolne.add(plansza[poleLitera-1][poleLiczba+1]);
+
+        }
+        if(sprawdzCzyIstnieje(poleLitera-1, poleLiczba-1)==true){
+            polaWolne.add(plansza[poleLitera-1][poleLiczba-1]);
+        }
+
+        if(sprawdzCzyIstnieje(poleLitera+1, poleLiczba-1)==true){
+            polaWolne.add(plansza[poleLitera+1][poleLiczba-1]);
+        }
+
+        System.out.println("Lista Array");
+
+        for(int j = 0; j<polaWolne.size(); j++) {
+            System.out.println(polaWolne.get(j));
+        }
+
+        String dwumasztowiec21;
+        dwumasztowiec21 = "nie działa";
+
+        System.out.println("Jednomasztowiec= " + jednomasztowiec);
+
+        int poleLitera21 = 1;
+        int poleLiczba21 = 1;
+
+        boolean i = false;
+        while(i != true) {
+
+            poleLitera21 = (int) (Math.random() * 5);
+            poleLiczba21 = (int) (Math.random() * 5);
+            dwumasztowiec21 = plansza[poleLitera21][poleLiczba21];
+
+            for(int j = 0; j<polaWolne.size(); j++) {
+                if (dwumasztowiec21 != polaWolne.get(j)){
+                    i = true;
+                }
+                else{
+                    i = false;
+                    break;
+                }
+            }
+        }
+        System.out.println("Dwumasztowiec21= " + dwumasztowiec21 + " poleLitera21= " + poleLitera21 + " poleLiczba21= " + poleLiczba21 );
+
+        ArrayList<String>pola22 = new ArrayList<String>();
+
+        if(sprawdzCzyIstnieje(poleLitera21, poleLiczba21+1)==true){
+            pola22.add(plansza[poleLitera21][poleLiczba21+1]);
+        }
+        if(sprawdzCzyIstnieje(poleLitera21, poleLiczba21-1)==true){
+            pola22.add(plansza[poleLitera21][poleLiczba21-1]);
+        }
+        if(sprawdzCzyIstnieje(poleLitera21+1, poleLiczba21)==true){
+            pola22.add(plansza[poleLitera21+1][poleLiczba21]);
+        }
+        if(sprawdzCzyIstnieje(poleLitera21-1, poleLiczba21)==true){
+            pola22.add(plansza[poleLitera21-1][poleLiczba21]);
+        }
+
+        for(int j = 0; j<pola22.size(); j++) {
+            System.out.println(pola22.get(j));
+        }
+
+        boolean k = false;
+        String dwumasztowiec22="dsgdg";
+        while(k!=true) {
+
+            int losuj22 = (int) (Math.random() * pola22.size());
+
+            if (losuj22 == 0) {
+                dwumasztowiec22 = pola22.get(0);
+            }
+            if (losuj22 == 1) {
+                dwumasztowiec22 = pola22.get(1);
+            }
+            if (losuj22 == 2) {
+                dwumasztowiec22 = pola22.get(2);
+            }
+            if (losuj22 == 3) {
+                dwumasztowiec22 = pola22.get(3);
+            }
+            for(int j = 0; j<polaWolne.size(); j++) {
+                if(dwumasztowiec22 != polaWolne.get(j)){
+                    k=true;
+                }
+                else{
+                    k=false;
+                    break;
+                }
+            }
+        }
+        String dwumasztoweiec = dwumasztowiec21 + " " + dwumasztowiec22;
+        System.out.println("Dwumasztowiec= " + dwumasztoweiec);
     }
 }
 

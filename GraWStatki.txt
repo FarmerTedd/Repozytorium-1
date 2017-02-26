@@ -9,56 +9,76 @@ import java.util.Scanner;
 public class Moje {
     public static void main(String[] args){
 
-       Plansza plansza = new Plansza();
-       ArrayList<Integer> planszaGry = plansza.tworz();
-       Dwumasztowiec dwumasztowiec = new Dwumasztowiec();
-       dwumasztowiec.tworz();
-       ArrayList<String> planszaGryPola = plansza.tworzPola();
+        Gra nowaGra = new Gra();
 
         System.out.println("Gra w statki!");
         System.out.println("Musisz zestrzelic wrogie okręty. Jednego jednomasztowca i jednego dwumasztowca");
         System.out.println("Strzelaj celnie, inaczej okręty przepłyną i wrogie wojska wyrżną mieszkańców twojego miasta");
         System.out.println("Strzelaj poprzez wpisanie pola od 'A1' do 'E5'");
 
-        Scanner scanner = new Scanner(System.in);
+        nowaGra.graj();
+    }
+}
+
+
+----------------------------------------------------------------------------------------
+
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+/**
+ * Created by Farmer on 2017-02-26.
+ */
+public class Gra {
+    Plansza plansza = new Plansza();
+    ArrayList<Integer> planszaGry = plansza.tworz();
+    Dwumasztowiec dwumasztowiec = new Dwumasztowiec();
+    ArrayList<String> planszaGryPola = plansza.tworzPola();
+
+    public void graj(){
+        dwumasztowiec.tworz();
 
         boolean i = false;
-
         while(i!=true) {
-            String strzal1 = scanner.next();
-            int strzal = planszaGry.get(planszaGryPola.indexOf(strzal1));
 
-            if(dwumasztowiec.jednomasztowiecc.contains(strzal)){
-                dwumasztowiec.jednomasztowiecc.remove(0);
-                System.out.println("Trafiony Zatopiony");
-            }
-            else if(dwumasztowiec.dwumasztowiec.contains(strzal)){
-                if(strzal==dwumasztowiec.dwumasztowiec.get(0)){
-                    dwumasztowiec.dwumasztowiec.remove(0);
-                    if(dwumasztowiec.dwumasztowiec.isEmpty()){
-                        System.out.println("Trafiony zatopiony");
+            Scanner scanner = new Scanner(System.in);
+
+            String strzal1 = scanner.next();
+            try {
+                int strzal = planszaGry.get(planszaGryPola.indexOf(strzal1));
+
+                if (dwumasztowiec.jednomasztowiecc.contains(strzal)) {
+                    dwumasztowiec.jednomasztowiecc.remove(0);
+                    System.out.println("Trafiony Zatopiony");
+                } else if (dwumasztowiec.dwumasztowiec.contains(strzal)) {
+                    if (strzal == dwumasztowiec.dwumasztowiec.get(0)) {
+                        dwumasztowiec.dwumasztowiec.remove(0);
+                        if (dwumasztowiec.dwumasztowiec.isEmpty()) {
+                            System.out.println("Trafiony zatopiony");
+                        } else {
+                            System.out.println("Trafiony");
+                        }
+                    } else {
+                        dwumasztowiec.dwumasztowiec.remove(1);
+                        if (dwumasztowiec.dwumasztowiec.isEmpty()) {
+                            System.out.println("Trafiony zatopiony");
+                        } else {
+                            System.out.println("Trafiony");
+                        }
                     }
-                    else{
-                        System.out.println("Trafiony");
-                    }
+                } else {
+                    System.out.println("Pudło");
                 }
-                else{
-                    dwumasztowiec.dwumasztowiec.remove(1);
-                    if(dwumasztowiec.dwumasztowiec.isEmpty()){
-                        System.out.println("Trafiony zatopiony");
-                    }
-                    else{
-                        System.out.println("Trafiony");
-                    }
+                if (dwumasztowiec.jednomasztowiecc.isEmpty() && dwumasztowiec.dwumasztowiec.isEmpty()) {
+                    System.out.println("Wygrałeś koniec gry");
+                    i = true;
+
                 }
+            } catch (Exception e) {
+                System.out.println("Nie ma takiego pola sprobuj ponownie");
             }
-            else{
-                System.out.println("Pudło");
-            }
-            if(dwumasztowiec.jednomasztowiecc.isEmpty() && dwumasztowiec.dwumasztowiec.isEmpty()){
-                System.out.println("Wygrałeś koniec gry");
-                i = true;
-            }
+
         }
     }
 }
@@ -118,6 +138,7 @@ public class Plansza {
 
 ----------------------------------------------------------------------------------------
 
+
 import java.util.ArrayList;
 
 /**
@@ -159,6 +180,10 @@ abstract class Jednomasztowiec extends Statki {
     ArrayList<Integer> strefaVI = new ArrayList<Integer>();
     ArrayList<Integer> strefaVII = new ArrayList<Integer>();
     ArrayList<Integer> strefaVIII = new ArrayList<Integer>();
+    ArrayList<Integer> strefaIX = new ArrayList<Integer>();
+    ArrayList<Integer> strefaX = new ArrayList<Integer>();
+    ArrayList<Integer> strefaXI = new ArrayList<Integer>();
+    ArrayList<Integer> strefaXII = new ArrayList<Integer>();
 
     public void tworz() {
         strefaI.add(0);
@@ -177,6 +202,18 @@ abstract class Jednomasztowiec extends Statki {
         strefaVIII.add(5);
         strefaVIII.add(10);
         strefaVIII.add(15);
+        strefaIX.add(8);
+        strefaIX.add(13);
+        strefaIX.add(18);
+        strefaX.add(6);
+        strefaX.add(11);
+        strefaX.add(16);
+        strefaXI.add(16);
+        strefaXI.add(17);
+        strefaXI.add(18);
+        strefaXII.add(6);
+        strefaXII.add(7);
+        strefaXII.add(8);
 
         int pole = (int) (Math.random() * 25);
         jednomasztowiec = planszaGry.get(pole);
@@ -350,7 +387,257 @@ public class Dwumasztowiec extends Jednomasztowiec {
 
         dwumasztowiec.add(dwumasztowiec21);
         dwumasztowiec.add(dwumasztowiec22);
+
+        if(dwumasztowiec21 - dwumasztowiec22 == -1){
+            if(strefaI.contains(dwumasztowiec21)){
+                polaWolne.add(2);
+                polaWolne.add(5);
+                polaWolne.add(6);
+                polaWolne.add(7);
+            }
+            else if(strefaIII.contains(dwumasztowiec21)){
+                polaWolne.add(15);
+                polaWolne.add(16);
+                polaWolne.add(17);
+                polaWolne.add(22);
+            }
+            else if(strefaV.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 1);
+                polaWolne.add(dwumasztowiec21 + 2);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 5);
+                polaWolne.add(dwumasztowiec21 + 6);
+                polaWolne.add(dwumasztowiec21 + 7);
+            }
+            else if(strefaVII.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 5);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 - 3);
+                polaWolne.add(dwumasztowiec21 - 1);
+                polaWolne.add(dwumasztowiec21 + 2);
+            }
+            else if(strefaVIII.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 5);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 - 3);
+                polaWolne.add(dwumasztowiec21 + 2);
+                polaWolne.add(dwumasztowiec21 + 5);
+                polaWolne.add(dwumasztowiec21 + 6);
+                polaWolne.add(dwumasztowiec21 + 7);
+            }
+            else if(strefaIX.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 5);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 - 1);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 5);
+                polaWolne.add(dwumasztowiec21 + 6);
+            }
+            else{
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 5);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 - 3);
+                polaWolne.add(dwumasztowiec21 - 1);
+                polaWolne.add(dwumasztowiec21 + 2);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 5);
+                polaWolne.add(dwumasztowiec21 + 6);
+                polaWolne.add(dwumasztowiec21 + 7);
+            }
+
+        }
+        else if(dwumasztowiec21 - dwumasztowiec22 == 1){
+            if(strefaII.contains(dwumasztowiec21)){
+                polaWolne.add(2);
+                polaWolne.add(7);
+                polaWolne.add(8);
+                polaWolne.add(9);
+            }
+            else if(strefaIV.contains(dwumasztowiec21)){
+                polaWolne.add(17);
+                polaWolne.add(18);
+                polaWolne.add(19);
+                polaWolne.add(22);
+            }
+            else if(strefaV.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 2);
+                polaWolne.add(dwumasztowiec21 + 1);
+                polaWolne.add(dwumasztowiec21 + 3);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 5);
+                polaWolne.add(dwumasztowiec21 + 6);
+            }
+            else if(strefaVI.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 7);
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 5);
+                polaWolne.add(dwumasztowiec21 - 2);
+                polaWolne.add(dwumasztowiec21 + 3);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 5);
+            }
+            else if(strefaVII.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 7);
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 5);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 - 2);
+                polaWolne.add(dwumasztowiec21 + 1);
+            }
+            else if(strefaX.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 5);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 + 1);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 5);
+                polaWolne.add(dwumasztowiec21 + 6);
+            }
+            else{
+                polaWolne.add(dwumasztowiec21 - 7);
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 5);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 - 2);
+                polaWolne.add(dwumasztowiec21 + 1);
+                polaWolne.add(dwumasztowiec21 + 3);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 5);
+                polaWolne.add(dwumasztowiec21 + 6);
+            }
+
+        }
+        else if(dwumasztowiec21 - dwumasztowiec22 == -5){
+            if(strefaI.contains(dwumasztowiec21)){
+                polaWolne.add(1);
+                polaWolne.add(6);
+                polaWolne.add(10);
+                polaWolne.add(11);
+            }
+            else if(strefaII.contains(dwumasztowiec21)){
+                polaWolne.add(3);
+                polaWolne.add(8);
+                polaWolne.add(13);
+                polaWolne.add(14);
+            }
+            else if(strefaV.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 1);
+                polaWolne.add(dwumasztowiec21 + 1);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 6);
+                polaWolne.add(dwumasztowiec21 + 9);
+                polaWolne.add(dwumasztowiec21 + 10);
+                polaWolne.add(dwumasztowiec21 + 11);
+            }
+            else if(strefaVI.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 5);
+                polaWolne.add(dwumasztowiec21 - 1);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 9);
+                polaWolne.add(dwumasztowiec21 + 10);
+            }
+            else if(strefaVIII.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 5);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 + 1);
+                polaWolne.add(dwumasztowiec21 + 6);
+                polaWolne.add(dwumasztowiec21 + 10);
+                polaWolne.add(dwumasztowiec21 + 11);
+            }
+            else if(strefaXI.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 5);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 - 1);
+                polaWolne.add(dwumasztowiec21 + 1);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 6);
+            }
+            else{
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 5);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 - 1);
+                polaWolne.add(dwumasztowiec21 + 1);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 6);
+                polaWolne.add(dwumasztowiec21 + 9);
+                polaWolne.add(dwumasztowiec21 + 10);
+                polaWolne.add(dwumasztowiec21 + 11);
+            }
+        }
+
+        else{
+            if(strefaIII.contains(dwumasztowiec21)){
+                polaWolne.add(10);
+                polaWolne.add(11);
+                polaWolne.add(16);
+                polaWolne.add(21);
+            }
+            else if(strefaIV.contains(dwumasztowiec21)){
+                polaWolne.add(13);
+                polaWolne.add(14);
+                polaWolne.add(18);
+                polaWolne.add(23);
+            }
+            else if(strefaVI.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 11);
+                polaWolne.add(dwumasztowiec21 - 10);
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 1);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 5);
+            }
+            else if(strefaVII.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 11);
+                polaWolne.add(dwumasztowiec21 - 10);
+                polaWolne.add(dwumasztowiec21 - 9);
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 - 1);
+                polaWolne.add(dwumasztowiec21 + 1);
+            }
+            else if(strefaVIII.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 10);
+                polaWolne.add(dwumasztowiec21 - 9);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 + 1);
+                polaWolne.add(dwumasztowiec21 + 5);
+                polaWolne.add(dwumasztowiec21 + 6);
+            }
+            else if(strefaXII.contains(dwumasztowiec21)){
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 - 1);
+                polaWolne.add(dwumasztowiec21 + 1);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 5);
+                polaWolne.add(dwumasztowiec21 + 6);
+            }
+            else{
+                polaWolne.add(dwumasztowiec21 - 11);
+                polaWolne.add(dwumasztowiec21 - 10);
+                polaWolne.add(dwumasztowiec21 - 9);
+                polaWolne.add(dwumasztowiec21 - 6);
+                polaWolne.add(dwumasztowiec21 - 4);
+                polaWolne.add(dwumasztowiec21 - 1);
+                polaWolne.add(dwumasztowiec21 + 1);
+                polaWolne.add(dwumasztowiec21 + 4);
+                polaWolne.add(dwumasztowiec21 + 5);
+                polaWolne.add(dwumasztowiec21 + 6);
+            }
+        }
+
         System.out.println("Dwumasztowiec= " + dwumasztowiec21 + ", " + dwumasztowiec22);
+
+        System.out.println("Pola Wolne");
+        for (int k=0; k<polaWolne.size(); k++ ){
+            System.out.print(polaWolne.get(k) + ", ");
+        }
     }
 }
 

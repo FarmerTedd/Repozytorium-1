@@ -1,15 +1,65 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Scanner;
+
 /**
- * Created by Farmer on 2017-02-23.
+ * Created by Farmer on 2017-02-26.
  */
-public class Main {
+public class Moje {
+    public static void main(String[] args){
 
-    public static void main(String[] args) {
+       Plansza plansza = new Plansza();
+       ArrayList<Integer> planszaGry = plansza.tworz();
+       Dwumasztowiec dwumasztowiec = new Dwumasztowiec();
+       dwumasztowiec.tworz();
+       ArrayList<String> planszaGryPola = plansza.tworzPola();
 
-        Plansza plansza = new Plansza();
+        System.out.println("Gra w statki!");
+        System.out.println("Musisz zestrzelic wrogie okręty. Jednego jednomasztowca i jednego dwumasztowca");
+        System.out.println("Strzelaj celnie, inaczej okręty przepłyną i wrogie wojska wyrżną mieszkańców twojego miasta");
+        System.out.println("Strzelaj poprzez wpisanie pola od 'A1' do 'E5'");
 
-        plansza.tworz();
+        Scanner scanner = new Scanner(System.in);
 
-        plansza.statki();
+        boolean i = false;
+
+        while(i!=true) {
+            String strzal1 = scanner.next();
+            int strzal = planszaGry.get(planszaGryPola.indexOf(strzal1));
+
+            if(dwumasztowiec.jednomasztowiecc.contains(strzal)){
+                dwumasztowiec.jednomasztowiecc.remove(0);
+                System.out.println("Trafiony Zatopiony");
+            }
+            else if(dwumasztowiec.dwumasztowiec.contains(strzal)){
+                if(strzal==dwumasztowiec.dwumasztowiec.get(0)){
+                    dwumasztowiec.dwumasztowiec.remove(0);
+                    if(dwumasztowiec.dwumasztowiec.isEmpty()){
+                        System.out.println("Trafiony zatopiony");
+                    }
+                    else{
+                        System.out.println("Trafiony");
+                    }
+                }
+                else{
+                    dwumasztowiec.dwumasztowiec.remove(1);
+                    if(dwumasztowiec.dwumasztowiec.isEmpty()){
+                        System.out.println("Trafiony zatopiony");
+                    }
+                    else{
+                        System.out.println("Trafiony");
+                    }
+                }
+            }
+            else{
+                System.out.println("Pudło");
+            }
+            if(dwumasztowiec.jednomasztowiecc.isEmpty() && dwumasztowiec.dwumasztowiec.isEmpty()){
+                System.out.println("Wygrałeś koniec gry");
+                i = true;
+            }
+        }
     }
 }
 
@@ -20,176 +70,293 @@ public class Main {
 import java.util.ArrayList;
 
 /**
- * Created by Farmer on 2017-02-24.
+ * Created by Farmer on 2017-02-26.
  */
 public class Plansza {
+    ArrayList<Integer> plansza;
+    ArrayList<String> polaPlanszy;
 
-    char litera = 'A';
-    int literaWartosc = (int) litera;
-    int literaWartoscBazowa = literaWartosc;
-    int liczba = 1;
-    int liczbaBazowa = liczba;
-
-    String plansza[][] = new String[5][5];
-
-    public void tworz() {
-
-        for (int i = 0; i < plansza.length; i++) {
-            for (int j = 0; j < plansza[i].length; j++) {
-
-                litera = (char) literaWartosc;
-                String literaS = String.valueOf(litera);
-
-                String liczbaS = String.valueOf(liczba);
-
-                plansza[i][j] = literaS + liczbaS;
-
-                System.out.println("Pole[" + i + "][" + j + "]= " + plansza[i][j]);
-                liczba = liczbaBazowa + j + 1;
-            }
-            liczba = liczbaBazowa;
-            literaWartosc = literaWartoscBazowa + i + 1;
+    public ArrayList<Integer> tworz() {
+        plansza = new ArrayList<Integer>();
+        for(int i=0; i<25; i++){
+            plansza.add(i);
         }
+        return plansza;
     }
+    public ArrayList<String> tworzPola(){
+        polaPlanszy = new ArrayList<String>();
+        polaPlanszy.add("A1");
+        polaPlanszy.add("B1");
+        polaPlanszy.add("C1");
+        polaPlanszy.add("D1");
+        polaPlanszy.add("E1");
+        polaPlanszy.add("A2");
+        polaPlanszy.add("B2");
+        polaPlanszy.add("C2");
+        polaPlanszy.add("D2");
+        polaPlanszy.add("E2");
+        polaPlanszy.add("A3");
+        polaPlanszy.add("B3");
+        polaPlanszy.add("C3");
+        polaPlanszy.add("D3");
+        polaPlanszy.add("E3");
+        polaPlanszy.add("A4");
+        polaPlanszy.add("B4");
+        polaPlanszy.add("C4");
+        polaPlanszy.add("D4");
+        polaPlanszy.add("E4");
+        polaPlanszy.add("A5");
+        polaPlanszy.add("B5");
+        polaPlanszy.add("C5");
+        polaPlanszy.add("D5");
+        polaPlanszy.add("E5");
 
-    public boolean sprawdzCzyIstnieje(int i, int j){
-        boolean spr = true;
-        try{
-            String cosTam = plansza[i][j];
-
-        }catch (Exception e){
-
-            spr = false;
-        }
-        return spr;
-    }
-
-    public void statki(){
-        int poleLitera = (int) (Math.random() * 5);
-        int poleLiczba = (int) (Math.random() * 5);
-
-        String jednomasztowiec = plansza[poleLitera][poleLiczba];
-
-        ArrayList <String> polaWolne = new ArrayList<String>();
-
-        polaWolne.add(jednomasztowiec);
-
-        if(sprawdzCzyIstnieje(poleLitera, poleLiczba+1)==true){
-            polaWolne.add(plansza[poleLitera][poleLiczba+1]);
-        }
-
-        if(sprawdzCzyIstnieje(poleLitera, poleLiczba-1)==true){
-            polaWolne.add(plansza[poleLitera][poleLiczba-1]);
-        }
-
-        if(sprawdzCzyIstnieje(poleLitera+1, poleLiczba)==true){
-            polaWolne.add(plansza[poleLitera+1][poleLiczba]);
-        }
-
-        if(sprawdzCzyIstnieje(poleLitera-1, poleLiczba)==true){
-            polaWolne.add(plansza[poleLitera-1][poleLiczba]);
-        }
-
-        if(sprawdzCzyIstnieje(poleLitera+1, poleLiczba+1)==true){
-            polaWolne.add(plansza[poleLitera+1][poleLiczba+1]);
-        }
-
-        if(sprawdzCzyIstnieje(poleLitera-1, poleLiczba+1)==true){
-            polaWolne.add(plansza[poleLitera-1][poleLiczba+1]);
-
-        }
-        if(sprawdzCzyIstnieje(poleLitera-1, poleLiczba-1)==true){
-            polaWolne.add(plansza[poleLitera-1][poleLiczba-1]);
-        }
-
-        if(sprawdzCzyIstnieje(poleLitera+1, poleLiczba-1)==true){
-            polaWolne.add(plansza[poleLitera+1][poleLiczba-1]);
-        }
-
-        System.out.println("Lista Array");
-
-        for(int j = 0; j<polaWolne.size(); j++) {
-            System.out.println(polaWolne.get(j));
-        }
-
-        String dwumasztowiec21;
-        dwumasztowiec21 = "nie działa";
-
-        System.out.println("Jednomasztowiec= " + jednomasztowiec);
-
-        int poleLitera21 = 1;
-        int poleLiczba21 = 1;
-
-        boolean i = false;
-        while(i != true) {
-
-            poleLitera21 = (int) (Math.random() * 5);
-            poleLiczba21 = (int) (Math.random() * 5);
-            dwumasztowiec21 = plansza[poleLitera21][poleLiczba21];
-
-            for(int j = 0; j<polaWolne.size(); j++) {
-                if (dwumasztowiec21 != polaWolne.get(j)){
-                    i = true;
-                }
-                else{
-                    i = false;
-                    break;
-                }
-            }
-        }
-        System.out.println("Dwumasztowiec21= " + dwumasztowiec21 + " poleLitera21= " + poleLitera21 + " poleLiczba21= " + poleLiczba21 );
-
-        ArrayList<String>pola22 = new ArrayList<String>();
-
-        if(sprawdzCzyIstnieje(poleLitera21, poleLiczba21+1)==true){
-            pola22.add(plansza[poleLitera21][poleLiczba21+1]);
-        }
-        if(sprawdzCzyIstnieje(poleLitera21, poleLiczba21-1)==true){
-            pola22.add(plansza[poleLitera21][poleLiczba21-1]);
-        }
-        if(sprawdzCzyIstnieje(poleLitera21+1, poleLiczba21)==true){
-            pola22.add(plansza[poleLitera21+1][poleLiczba21]);
-        }
-        if(sprawdzCzyIstnieje(poleLitera21-1, poleLiczba21)==true){
-            pola22.add(plansza[poleLitera21-1][poleLiczba21]);
-        }
-
-        for(int j = 0; j<pola22.size(); j++) {
-            System.out.println(pola22.get(j));
-        }
-
-        boolean k = false;
-        String dwumasztowiec22="dsgdg";
-        while(k!=true) {
-
-            int losuj22 = (int) (Math.random() * pola22.size());
-
-            if (losuj22 == 0) {
-                dwumasztowiec22 = pola22.get(0);
-            }
-            if (losuj22 == 1) {
-                dwumasztowiec22 = pola22.get(1);
-            }
-            if (losuj22 == 2) {
-                dwumasztowiec22 = pola22.get(2);
-            }
-            if (losuj22 == 3) {
-                dwumasztowiec22 = pola22.get(3);
-            }
-            for(int j = 0; j<polaWolne.size(); j++) {
-                if(dwumasztowiec22 != polaWolne.get(j)){
-                    k=true;
-                }
-                else{
-                    k=false;
-                    break;
-                }
-            }
-        }
-        String dwumasztoweiec = dwumasztowiec21 + " " + dwumasztowiec22;
-        System.out.println("Dwumasztowiec= " + dwumasztoweiec);
+        return polaPlanszy;
     }
 }
 
 
 ----------------------------------------------------------------------------------------
+
+import java.util.ArrayList;
+
+/**
+ * Created by Farmer on 2017-02-26.
+ */
+abstract class Statki {
+    Plansza plansza = new Plansza();
+    ArrayList<Integer> planszaGry = plansza.tworz();
+    ArrayList<Integer> polaWolne = new ArrayList<Integer>();
+
+    public boolean czyIstnieje(int indeks){
+        boolean spr = true;
+        try{
+            int cosTam = planszaGry.get(indeks);
+        }catch (Exception e){
+            spr = false;
+        }
+        return spr;
+    }
+}
+
+
+----------------------------------------------------------------------------------------
+
+
+import java.util.ArrayList;
+
+/**
+ * Created by Farmer on 2017-02-26.
+ */
+abstract class Jednomasztowiec extends Statki {
+    int jednomasztowiec;
+    public ArrayList<Integer> jednomasztowiecc = new ArrayList<Integer>();
+    ArrayList<Integer> strefaI = new ArrayList<Integer>();
+    ArrayList<Integer> strefaII = new ArrayList<Integer>();
+    ArrayList<Integer> strefaIII = new ArrayList<Integer>();
+    ArrayList<Integer> strefaIV = new ArrayList<Integer>();
+    ArrayList<Integer> strefaV = new ArrayList<Integer>();
+    ArrayList<Integer> strefaVI = new ArrayList<Integer>();
+    ArrayList<Integer> strefaVII = new ArrayList<Integer>();
+    ArrayList<Integer> strefaVIII = new ArrayList<Integer>();
+
+    public void tworz() {
+        strefaI.add(0);
+        strefaII.add(4);
+        strefaIII.add(20);
+        strefaIV.add(24);
+        strefaV.add(1);
+        strefaV.add(2);
+        strefaV.add(3);
+        strefaVI.add(9);
+        strefaVI.add(14);
+        strefaVI.add(19);
+        strefaVII.add(21);
+        strefaVII.add(22);
+        strefaVII.add(23);
+        strefaVIII.add(5);
+        strefaVIII.add(10);
+        strefaVIII.add(15);
+
+        int pole = (int) (Math.random() * 25);
+        jednomasztowiec = planszaGry.get(pole);
+
+        polaWolne.add(jednomasztowiec);
+
+        if(strefaI.contains(jednomasztowiec)){
+            polaWolne.add(1);
+            polaWolne.add(5);
+            polaWolne.add(6);
+        }
+        else if(strefaII.contains(jednomasztowiec)){
+            polaWolne.add(3);
+            polaWolne.add(8);
+            polaWolne.add(9);
+        }
+        else if(strefaIII.contains(jednomasztowiec)){
+            polaWolne.add(15);
+            polaWolne.add(16);
+            polaWolne.add(21);
+        }
+        else if(strefaIV.contains(jednomasztowiec)){
+            polaWolne.add(18);
+            polaWolne.add(19);
+            polaWolne.add(23);
+        }
+        else if(strefaV.contains(jednomasztowiec)){
+            polaWolne.add(jednomasztowiec-1);
+            polaWolne.add(jednomasztowiec+1);
+            polaWolne.add(jednomasztowiec+4);
+            polaWolne.add(jednomasztowiec+5);
+            polaWolne.add(jednomasztowiec+6);
+        }
+        else if(strefaVI.contains(jednomasztowiec)){
+            polaWolne.add(jednomasztowiec-6);
+            polaWolne.add(jednomasztowiec-5);
+            polaWolne.add(jednomasztowiec-1);
+            polaWolne.add(jednomasztowiec+4);
+            polaWolne.add(jednomasztowiec+5);
+        }
+        else if(strefaVII.contains(jednomasztowiec)){
+            polaWolne.add(jednomasztowiec-6);
+            polaWolne.add(jednomasztowiec-5);
+            polaWolne.add(jednomasztowiec-4);
+            polaWolne.add(jednomasztowiec-1);
+            polaWolne.add(jednomasztowiec+1);
+        }
+        else if(strefaVIII.contains(jednomasztowiec)){
+            polaWolne.add(jednomasztowiec-5);
+            polaWolne.add(jednomasztowiec-4);
+            polaWolne.add(jednomasztowiec+1);
+            polaWolne.add(jednomasztowiec+5);
+            polaWolne.add(jednomasztowiec+6);
+        }
+        else{
+            polaWolne.add(jednomasztowiec-6);
+            polaWolne.add(jednomasztowiec-5);
+            polaWolne.add(jednomasztowiec-4);
+            polaWolne.add(jednomasztowiec-1);
+            polaWolne.add(jednomasztowiec+1);
+            polaWolne.add(jednomasztowiec+4);
+            polaWolne.add(jednomasztowiec+5);
+            polaWolne.add(jednomasztowiec+6);
+        }
+        jednomasztowiecc.add(jednomasztowiec);
+        System.out.println("Jednomasztowiec= " + jednomasztowiec);
+    }
+}
+
+
+----------------------------------------------------------------------------------------
+
+
+import java.util.ArrayList;
+
+/**
+ * Created by Farmer on 2017-02-26.
+ */
+public class Dwumasztowiec extends Jednomasztowiec {
+    int dwumasztowiec21;
+    int dwumasztowiec22;
+    public ArrayList<Integer> dwumasztowiec = new ArrayList<Integer>();
+    @Override
+    public void tworz() {
+        super.tworz();
+        boolean i = false;
+        while (i != true) {
+            int pole = (int) (Math.random() * 25);
+
+            dwumasztowiec21 = planszaGry.get(pole);
+
+            for (int j = 0; j < polaWolne.size(); j++) {
+                if (dwumasztowiec21 != polaWolne.get(j)) {
+                    i = true;
+                } else {
+                    i = false;
+                    break;
+                }
+            }
+        }
+        polaWolne.add(dwumasztowiec21);
+
+        ArrayList<Integer> polaMozliwe22 = new ArrayList<Integer>();
+        ArrayList<Integer> pola22 = new ArrayList<Integer>();
+
+        if(strefaI.contains(dwumasztowiec21)) {
+            polaMozliwe22.add(dwumasztowiec21 + 1);
+            polaMozliwe22.add(dwumasztowiec21 + 5);
+        }
+        else if(strefaII.contains(dwumasztowiec21)) {
+            polaMozliwe22.add(dwumasztowiec21 - 1);
+            polaMozliwe22.add(dwumasztowiec21 + 5);
+        }
+        else if(strefaIII.contains(dwumasztowiec21)) {
+            polaMozliwe22.add(dwumasztowiec21 - 5);
+            polaMozliwe22.add(dwumasztowiec21 + 1);
+        }
+        else if(strefaIV.contains(dwumasztowiec21)) {
+            polaMozliwe22.add(dwumasztowiec21 - 5);
+            polaMozliwe22.add(dwumasztowiec21 - 1);
+        }
+        else if(strefaV.contains(dwumasztowiec21)) {
+            polaMozliwe22.add(dwumasztowiec21 - 1);
+            polaMozliwe22.add(dwumasztowiec21 + 1);
+            polaMozliwe22.add(dwumasztowiec21 + 5);
+        }
+        else if(strefaVI.contains(dwumasztowiec21)) {
+            polaMozliwe22.add(dwumasztowiec21 - 5);
+            polaMozliwe22.add(dwumasztowiec21 - 1);
+            polaMozliwe22.add(dwumasztowiec21 + 5);
+        }
+        else if(strefaVII.contains(dwumasztowiec21)) {
+            polaMozliwe22.add(dwumasztowiec21 - 5);
+            polaMozliwe22.add(dwumasztowiec21 - 1);
+            polaMozliwe22.add(dwumasztowiec21 + 1);
+        }
+        else if(strefaVIII.contains(dwumasztowiec21)) {
+            polaMozliwe22.add(dwumasztowiec21 - 5);
+            polaMozliwe22.add(dwumasztowiec21 + 1);
+            polaMozliwe22.add(dwumasztowiec21 + 5);
+        }
+        else{
+            polaMozliwe22.add(dwumasztowiec21 - 5);
+            polaMozliwe22.add(dwumasztowiec21 - 1);
+            polaMozliwe22.add(dwumasztowiec21 + 1);
+            polaMozliwe22.add(dwumasztowiec21 + 5);
+        }
+
+        for(int k=0; k<polaMozliwe22.size(); k++){
+            if(polaWolne.contains(polaMozliwe22.get(k))){}
+            else{
+                pola22.add(polaMozliwe22.get(k));
+            }
+        }
+        int pole22 = (int) (Math.random() * pola22.size());
+
+        if (pole22 == 0) {
+            dwumasztowiec22 = pola22.get(0);
+        }
+        if (pole22 == 1) {
+            dwumasztowiec22 = pola22.get(1);
+        }
+        if (pole22 == 2) {
+            dwumasztowiec22 = pola22.get(2);
+        }
+        if (pole22 == 3) {
+            dwumasztowiec22 = pola22.get(3);
+        }
+
+        polaWolne.add(dwumasztowiec22);
+
+        dwumasztowiec.add(dwumasztowiec21);
+        dwumasztowiec.add(dwumasztowiec22);
+        System.out.println("Dwumasztowiec= " + dwumasztowiec21 + ", " + dwumasztowiec22);
+    }
+}
+
+
+----------------------------------------------------------------------------------------
+
+
+
+
